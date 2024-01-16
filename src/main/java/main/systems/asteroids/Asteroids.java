@@ -7,11 +7,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class Asteroids extends Application {
+    int score;
+
     public static void main(String[] args) {
         try {
             launch(args);
@@ -36,12 +39,14 @@ public class Asteroids extends Application {
 
 
         ArrayList<String> keyPressedList = new ArrayList<>();
+        ArrayList<String> keyJustPressedList = new ArrayList<>();
         mainScene.setOnKeyPressed(
                 (KeyEvent event) -> {
                     String keyName = event.getCode().toString();
 
                     if (!keyPressedList.contains(keyName)) {
                         keyPressedList.add(keyName);
+                        keyJustPressedList.add(keyName);
                     }
                 }
         );
@@ -63,9 +68,22 @@ public class Asteroids extends Application {
 
         Sprite spaceShip = new Sprite("img/ship1.png");
         spaceShip.position.set(100, 300);
-        //spaceShip.velocity.set(50,0);
-        //spaceShip.rotation = 90;
 
+        ArrayList<Sprite> laserList = new ArrayList<>();
+        ArrayList<Sprite> asteroidList = new ArrayList<>();
+
+        int asteroidsCount = 6;
+        score = 0;
+        for (int i = 0; i < asteroidsCount; i++) {
+            Sprite asteroid = new Sprite("img/ast1.png");
+            double x = 500 * Math.random() + 300;
+            double y = 400 * Math.random() + 100;
+            asteroid.position.set(x, y);
+            double angle = 360 * Math.random();
+            asteroid.velocity.setLength(10);
+            asteroid.velocity.setAngle(angle);
+            asteroidList.add(asteroid);
+        }
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -80,12 +98,53 @@ public class Asteroids extends Application {
                     spaceShip.velocity.setLength(50);
                     spaceShip.velocity.setAngle(spaceShip.rotation);
                 } else {
-                    spaceShip.velocity.setLength(0);
+                    spaceShip.velocity.setLength(50);
                 }
+                if (keyJustPressedList.contains("SPACE")) {
+                    Sprite laser = new Sprite("img/laser.png");
+                    laser.position.set(spaceShip.position.x, spaceShip.position.y);
+                    laser.velocity.setLength(400);
+                    laser.velocity.setAngle(spaceShip.rotation);
+                    laserList.add(laser);
+                }
+                keyJustPressedList.clear();
 
                 spaceShip.update(1 / 60.0);
+
+                for (Sprite asteroid : asteroidList) {
+                    asteroid.update(1 / 60.0);
+                }
+
+                for (int n = 0; n < laserList.size(); n++) {
+                    Sprite laser = laserList.get(n);
+                    laser.update(1 / 60.0);
+                    if (laser.elapsedTime > 2) {
+                        laserList.remove(n);
+                    }
+                }
+
+                for (int laserNum = 0; laserNum < laserList.size(); laserNum++) {
+                    Sprite laser = laserList.get(laserNum);
+                    for (int asteroidsNum = 0; asteroidsNum < asteroidList.size(); asteroidsNum++) {
+                        Sprite asteroid = asteroidList.get(asteroidsNum);
+                        if (laser.overlaps(asteroid)) {
+                            laserList.remove(laserNum);
+                            asteroidList.remove(asteroidsNum);
+                            score ++;
+                        }
+                    }
+                }
+
+
                 background.render(context);
                 spaceShip.render(context);
+                for (Sprite laser : laserList) {
+                    laser.render(context);
+                }
+                for (Sprite asteroid : asteroidList) {
+                    asteroid.render(context);
+                }
+                context.setFill(Color.WHITE);
             }
         };
 

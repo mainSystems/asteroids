@@ -8,14 +8,15 @@ public class Sprite {
     public Vector velocity;
     public double rotation;
     public Rectangle boundary;
-
     public Image image;
+    public double elapsedTime;
 
     public Sprite() {
         this.position = new Vector();
         this.velocity = new Vector();
         this.rotation = 0;
         this.boundary = new Rectangle();
+        this.elapsedTime = 0;
     }
 
     public Sprite(String imageFilename) {
@@ -56,6 +57,7 @@ public class Sprite {
     }
 
     public void update(double deltaTime) {
+        this.elapsedTime += deltaTime;
         this.position.add(this.velocity.x * deltaTime, this.velocity.y * deltaTime);
         this.wrap(800, 600);
     }
