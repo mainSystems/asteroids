@@ -35,8 +35,7 @@ public class Vector {
         } else {
             System.out.println("2L = " + length);
             this.multiply(1 / currentLength);
-//            this.multiply(length);
-            this.multiply(50);
+            this.multiply(length);
         }
     }
 

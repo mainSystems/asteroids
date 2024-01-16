@@ -20,6 +20,14 @@ public class Asteroids extends Application {
     private static final int SCREEN_Y = 600;
     private static final String TITLE = "Asteroids";
     private static final int asteroidsCount = 6;
+    public static final String BACKGROUND_1 = "img/bg1.jpg";
+    public static final String SHIP_1 = "img/ship1.png";
+    public static final String ASTEROID_1 = "img/ast1.png";
+    public static final String LASER = "img/laser.png";
+    public static final int SPACE_SHIP_SPEED = 100;
+    public static final int SPACE_SHIP_ROTATION = 3;
+    public static final int LASER_SPEED = 400;
+    public static final int ASTEROID_SPEED = 10;
     private int score = 0;
 
     public static void main(String[] args) {
@@ -47,6 +55,7 @@ public class Asteroids extends Application {
 
         ArrayList<String> keyPressedList = new ArrayList<>();
         ArrayList<String> keyJustPressedList = new ArrayList<>();
+
         mainScene.setOnKeyPressed(
                 (KeyEvent event) -> {
                     String keyName = event.getCode().toString();
@@ -69,24 +78,23 @@ public class Asteroids extends Application {
         );
 
 
-        Sprite background = new Sprite("img/bg1.jpg");
+        Sprite background = new Sprite(BACKGROUND_1);
         background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
 
 
-        Sprite spaceShip = new Sprite("img/ship1.png");
+        Sprite spaceShip = new Sprite(SHIP_1);
         spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
         ArrayList<Sprite> laserList = new ArrayList<>();
         ArrayList<Sprite> asteroidList = new ArrayList<>();
 
-        //score = 0;
         for (int i = 0; i < asteroidsCount; i++) {
-            Sprite asteroid = new Sprite("img/ast1.png");
+            Sprite asteroid = new Sprite(ASTEROID_1);
             double x = 500 * Math.random() + 300;
             double y = 400 * Math.random() + 100;
             asteroid.position.set(x, y);
             double angle = 360 * Math.random();
-            asteroid.velocity.setLength(10);
+            asteroid.velocity.setLength(ASTEROID_SPEED);
             asteroid.velocity.setAngle(angle);
             asteroidList.add(asteroid);
         }
@@ -94,26 +102,32 @@ public class Asteroids extends Application {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long nanotime) {
-                if (keyPressedList.contains("LEFT")) {
-                    spaceShip.rotation -= 3;
-                }
-                if (keyPressedList.contains("RIGHT")) {
-                    spaceShip.rotation += 3;
-                }
-                if (keyPressedList.contains("UP")) {
-                    spaceShip.velocity.setLength(50);
-                    spaceShip.velocity.setAngle(spaceShip.rotation);
-                } else {
-                    spaceShip.velocity.setLength(50);
+                for (String key : keyPressedList) {
+                    switch (key) {
+                        case "LEFT":
+                            spaceShip.rotation -= SPACE_SHIP_ROTATION;
+                            break;
+                        case "RIGHT":
+                            spaceShip.rotation += SPACE_SHIP_ROTATION;
+                            break;
+                        case "UP":
+                            spaceShip.velocity.setAngle(spaceShip.rotation);
+                            spaceShip.velocity.setLength(SPACE_SHIP_SPEED);
+                            break;
+                        default:
+                            spaceShip.velocity.setLength(0);
+                            break;
+                    }
                 }
                 if (keyJustPressedList.contains("SPACE")) {
-                    Sprite laser = new Sprite("img/laser.png");
+                    Sprite laser = new Sprite(LASER);
                     laser.position.set(spaceShip.position.x, spaceShip.position.y);
-                    laser.velocity.setLength(400);
                     laser.velocity.setAngle(spaceShip.rotation);
+                    laser.velocity.setLength(LASER_SPEED);
                     laserList.add(laser);
                 }
                 keyJustPressedList.clear();
+
 
                 spaceShip.update(DELTA_TIME);
 
