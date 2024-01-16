@@ -12,11 +12,11 @@ public class Sprite {
     public double elapsedTime;
 
     public Sprite() {
-        this.position = new Vector();
-        this.velocity = new Vector();
-        this.rotation = 0;
-        this.boundary = new Rectangle();
-        this.elapsedTime = 0;
+        position = new Vector();
+        velocity = new Vector();
+        rotation = 0;
+        boundary = new Rectangle();
+        elapsedTime = 0;
     }
 
     public Sprite(String imageFilename) {
@@ -25,49 +25,49 @@ public class Sprite {
     }
 
     public void setImage(String imageFileName) {
-        this.image = new Image(imageFileName);
-        this.boundary.setSize(this.image.getWidth(), this.image.getHeight());
+        image = new Image(imageFileName);
+        boundary.setSize(image.getWidth(), image.getHeight());
     }
 
     public Rectangle getBoundary() {
-        this.boundary.setPosition(this.position.x, this.position.y);
-        return this.boundary;
+        boundary.setPosition(position.x, position.y);
+        return boundary;
     }
 
     public boolean overlaps(Sprite other) {
-        return this.getBoundary().overlaps(other.getBoundary());
+        return getBoundary().overlaps(other.getBoundary());
     }
 
     public void wrap(double screenWidth, double screenHeight) {
-        double halfWidth = this.image.getWidth() / 2;
-        double halfHeight = this.image.getHeight() / 2;
+        double halfWidth = image.getWidth() / 2;
+        double halfHeight = image.getHeight() / 2;
 
-        if (this.position.x + halfWidth < 0) {
-            this.position.x = screenWidth + halfWidth;
+        if (position.x + halfWidth < 0) {
+            position.x = screenWidth + halfWidth;
         }
-        if (this.position.x > screenWidth + halfWidth) {
-            this.position.x = -halfWidth;
+        if (position.x > screenWidth + halfWidth) {
+            position.x = -halfWidth;
         }
-        if (this.position.y + halfHeight < 0) {
-            this.position.y = screenHeight + halfHeight;
+        if (position.y + halfHeight < 0) {
+            position.y = screenHeight + halfHeight;
         }
-        if (this.position.y > screenHeight + halfHeight) {
-            this.position.y = -halfHeight;
+        if (position.y > screenHeight + halfHeight) {
+            position.y = -halfHeight;
         }
     }
 
     public void update(double deltaTime) {
-        this.elapsedTime += deltaTime;
-        this.position.add(this.velocity.x * deltaTime, this.velocity.y * deltaTime);
-        this.wrap(800, 600);
+        elapsedTime += deltaTime;
+        position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+        wrap(Asteroids.SCREEN_X, Asteroids.SCREEN_Y);
     }
 
     public void render(GraphicsContext context) {
         context.save();
-        context.translate(this.position.x, this.position.y);
-        context.rotate(this.rotation);
-        context.translate(-this.image.getWidth() / 2, -this.image.getHeight() / 2);
-        context.drawImage(this.image, 0, 0);
+        context.translate(position.x, position.y);
+        context.rotate(rotation);
+        context.translate(-image.getWidth() / 2, -image.getHeight() / 2);
+        context.drawImage(image, 0, 0);
         context.restore();
     }
 }

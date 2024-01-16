@@ -2,7 +2,6 @@ package main.systems.asteroids;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,11 +14,12 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Asteroids extends Application {
+    public static final int SCREEN_X = 800;
+    public static final int SCREEN_Y = 600;
     private static final double DELTA_TIME = 1 / 60.0;
     private static final int ELAPSED_TIME = 2;
-    private static final int SCREEN_X = 800;
-    private static final int SCREEN_Y = 600;
     private static final String TITLE = "Asteroids";
+    private static final int TEXT_X = 700, TEXT_Y = 15;
     private static final int asteroidsCount = 6;
     private static final String BACKGROUND_1 = "img/bg1.jpg";
     private static final String SHIP_1 = "img/ship1.png";
@@ -29,6 +29,16 @@ public class Asteroids extends Application {
     private static final int SPACE_SHIP_ROTATION = 3;
     private static final int LASER_SPEED = 400;
     private static final int ASTEROID_SPEED = 10;
+    private GraphicsContext context;
+    private ArrayList<String> keyPressedList = new ArrayList<>();
+    private ArrayList<String> keyJustPressedList = new ArrayList<>();
+    private ArrayList<Sprite> laserList = new ArrayList<>();
+    private ArrayList<Sprite> asteroidList = new ArrayList<>();
+    private Sprite background;
+    private Sprite spaceShip;
+    private Sprite asteroid;
+    private Sprite laser;
+    private int lives = 3;
     private int score = 0;
 
     public static void main(String[] args) {
@@ -50,12 +60,8 @@ public class Asteroids extends Application {
         mainStage.setScene(mainScene);
 
         Canvas canvas = new Canvas(SCREEN_X, SCREEN_Y);
-        GraphicsContext context = canvas.getGraphicsContext2D();
+        context = canvas.getGraphicsContext2D();
         root.setCenter(canvas);
-
-
-        ArrayList<String> keyPressedList = new ArrayList<>();
-        ArrayList<String> keyJustPressedList = new ArrayList<>();
 
         mainScene.setOnKeyPressed(
                 (KeyEvent event) -> {
@@ -79,18 +85,15 @@ public class Asteroids extends Application {
         );
 
 
-        Sprite background = new Sprite(BACKGROUND_1);
+        background = new Sprite(BACKGROUND_1);
         background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
 
 
-        Sprite spaceShip = new Sprite(SHIP_1);
+        spaceShip = new Sprite(SHIP_1);
         spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
-        ArrayList<Sprite> laserList = new ArrayList<>();
-        ArrayList<Sprite> asteroidList = new ArrayList<>();
-
         for (int i = 0; i < asteroidsCount; i++) {
-            Sprite asteroid = new Sprite(ASTEROID_1);
+            asteroid = new Sprite(ASTEROID_1);
             double x = 500 * Math.random() + 300;
             double y = 400 * Math.random() + 100;
             asteroid.position.set(x, y);
@@ -103,82 +106,91 @@ public class Asteroids extends Application {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long nanotime) {
-                for (String key : keyPressedList) {
-                    switch (key) {
-                        case "LEFT":
-                            spaceShip.rotation -= SPACE_SHIP_ROTATION;
-                            break;
-                        case "RIGHT":
-                            spaceShip.rotation += SPACE_SHIP_ROTATION;
-                            break;
-                        case "UP":
-                            spaceShip.velocity.setAngle(spaceShip.rotation);
-                            spaceShip.velocity.setLength(SPACE_SHIP_SPEED);
-                            break;
-                        default:
-                            spaceShip.velocity.setLength(0);
-                            break;
-                    }
-                }
-                if (keyJustPressedList.contains("SPACE")) {
-                    Sprite laser = new Sprite(LASER);
-                    laser.position.set(spaceShip.position.x, spaceShip.position.y);
-                    laser.velocity.setAngle(spaceShip.rotation);
-                    laser.velocity.setLength(LASER_SPEED);
-                    laserList.add(laser);
-                }
-                keyJustPressedList.clear();
-
-
-                spaceShip.update(DELTA_TIME);
-
-                for (Sprite asteroid : asteroidList) {
-                    asteroid.update(DELTA_TIME);
-                }
-
-                for (int n = 0; n < laserList.size(); n++) {
-                    Sprite laser = laserList.get(n);
-                    laser.update(DELTA_TIME);
-                    if (laser.elapsedTime > ELAPSED_TIME) {
-                        laserList.remove(n);
-                    }
-                }
-
-                for (int laserNum = 0; laserNum < laserList.size(); laserNum++) {
-                    Sprite laser = laserList.get(laserNum);
-                    for (int asteroidsNum = 0; asteroidsNum < asteroidList.size(); asteroidsNum++) {
-                        Sprite asteroid = asteroidList.get(asteroidsNum);
-                        if (laser.overlaps(asteroid)) {
-                            laserList.remove(laserNum);
-                            asteroidList.remove(asteroidsNum);
-                            score++;
-                        }
-                    }
-                }
-
-
-                background.render(context);
-                spaceShip.render(context);
-                for (Sprite laser : laserList) {
-                    laser.render(context);
-                }
-                for (Sprite asteroid : asteroidList) {
-                    asteroid.render(context);
-                }
-                context.setFill(Color.WHITE);
-                context.setStroke(Color.GREEN);
-                context.setFont(new Font("Hack", 18));
-                context.setLineWidth(3);
-                String text = "Score: " + score;
-                int textX = 700;
-                int textY = 15;
-                context.fillText(text, textX, textY);
-                context.strokeText(text, textX, textY);
-
+                handleKey();
+                movings();
+                collisions();
+                render();
             }
         };
 
         gameLoop.start();
         mainStage.show();
+    }
+
+    private void render() {
+        background.render(context);
+        spaceShip.render(context);
+        for (Sprite laser : laserList) {
+            laser.render(context);
+        }
+        for (Sprite asteroid : asteroidList) {
+            asteroid.render(context);
+        }
+        context.setFill(Color.WHITE);
+        context.setStroke(Color.GREEN);
+        context.setFont(new Font("Hack", 18));
+        context.setLineWidth(0);
+        String text = String.format("Score: %s\nLives: %s", score, lives);
+        context.fillText(text, TEXT_X, TEXT_Y);
+        context.strokeText(text, TEXT_X, TEXT_Y);
+    }
+
+    private void collisions() {
+        for (int laserNum = 0; laserNum < laserList.size(); laserNum++) {
+            laser = laserList.get(laserNum);
+            for (int asteroidsNum = 0; asteroidsNum < asteroidList.size(); asteroidsNum++) {
+                asteroid = asteroidList.get(asteroidsNum);
+                if (laser.overlaps(asteroid)) {
+                    laserList.remove(laserNum);
+                    asteroidList.remove(asteroidsNum);
+                    score++;
+                }
+            }
+        }
+
+        for (Sprite asteroid : asteroidList) {
+            if (asteroid.overlaps(spaceShip)) {
+                System.out.println("ship broken");
+                lives--;
+            }
+        }
+    }
+
+    private void movings() {
+        spaceShip.update(DELTA_TIME);
+
+        for (Sprite asteroid : asteroidList) {
+            asteroid.update(DELTA_TIME);
+        }
+
+        for (int n = 0; n < laserList.size(); n++) {
+            laser = laserList.get(n);
+            laser.update(DELTA_TIME);
+            if (laser.elapsedTime > ELAPSED_TIME) {
+                laserList.remove(n);
+            }
+        }
+    }
+
+    private void handleKey() {
+        for (String key : keyPressedList) {
+            switch (key) {
+                case "LEFT" -> spaceShip.rotation -= SPACE_SHIP_ROTATION;
+                case "RIGHT" -> spaceShip.rotation += SPACE_SHIP_ROTATION;
+                case "UP" -> {
+                    spaceShip.velocity.setAngle(spaceShip.rotation);
+                    spaceShip.velocity.setLength(SPACE_SHIP_SPEED);
+                }
+                default -> spaceShip.velocity.setLength(0);
+            }
+        }
+        if (keyJustPressedList.contains("SPACE")) {
+            laser = new Sprite(LASER);
+            laser.position.set(spaceShip.position.x, spaceShip.position.y);
+            laser.velocity.setAngle(spaceShip.rotation);
+            laser.velocity.setLength(LASER_SPEED);
+            laserList.add(laser);
+        }
+        keyJustPressedList.clear();
     }
 }

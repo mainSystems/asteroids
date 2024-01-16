@@ -7,31 +7,31 @@ public class Rectangle {
     double height;
 
     public Rectangle() {
-        this.setPosition(0, 0);
-        this.setSize(1, 1);
+        setPosition(0, 0);
+        setSize(1, 1);
     }
 
     public Rectangle(double x, double y, double w, double h) {
-        this.setPosition(x, y);
-        this.setSize(w, h);
+        setPosition(x, y);
+        setSize(w, h);
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public void setPosition(double dx, double dy) {
+        x = dx;
+        y = dy;
     }
 
     public void setSize(double w, double h) {
-        this.height = h;
-        this.width = w;
+        height = h;
+        width = w;
     }
 
     public boolean overlaps(Rectangle other) {
         boolean noOverlaps =
-                this.x + this.width < other.x ||
-                        other.x + other.width < this.x ||
-                        this.y + this.height < other.y ||
-                        other.y + other.height < this.y;
+                x + width < other.x ||
+                        other.x + other.width < x ||
+                        y + height < other.y ||
+                        other.y + other.height < y;
         return !noOverlaps;
     }
 }
