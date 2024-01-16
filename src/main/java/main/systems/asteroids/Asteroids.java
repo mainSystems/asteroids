@@ -8,12 +8,19 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class Asteroids extends Application {
-    int score;
+    public static final double DELTA_TIME = 1 / 60.0;
+    public static final int ELAPSED_TIME = 2;
+    private static final int SCREEN_X = 800;
+    private static final int SCREEN_Y = 600;
+    private static final String TITLE = "Asteroids";
+    private static final int asteroidsCount = 6;
+    private int score = 0;
 
     public static void main(String[] args) {
         try {
@@ -27,13 +34,13 @@ public class Asteroids extends Application {
 
     @Override
     public void start(Stage mainStage) {
-        mainStage.setTitle("Asteroids");
+        mainStage.setTitle(TITLE);
 
         BorderPane root = new BorderPane();
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
 
-        Canvas canvas = new Canvas(800, 600);
+        Canvas canvas = new Canvas(SCREEN_X, SCREEN_Y);
         GraphicsContext context = canvas.getGraphicsContext2D();
         root.setCenter(canvas);
 
@@ -63,17 +70,16 @@ public class Asteroids extends Application {
 
 
         Sprite background = new Sprite("img/bg1.jpg");
-        background.position.set(400, 300);
+        background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
 
 
         Sprite spaceShip = new Sprite("img/ship1.png");
-        spaceShip.position.set(100, 300);
+        spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
         ArrayList<Sprite> laserList = new ArrayList<>();
         ArrayList<Sprite> asteroidList = new ArrayList<>();
 
-        int asteroidsCount = 6;
-        score = 0;
+        //score = 0;
         for (int i = 0; i < asteroidsCount; i++) {
             Sprite asteroid = new Sprite("img/ast1.png");
             double x = 500 * Math.random() + 300;
@@ -109,16 +115,16 @@ public class Asteroids extends Application {
                 }
                 keyJustPressedList.clear();
 
-                spaceShip.update(1 / 60.0);
+                spaceShip.update(DELTA_TIME);
 
                 for (Sprite asteroid : asteroidList) {
-                    asteroid.update(1 / 60.0);
+                    asteroid.update(DELTA_TIME);
                 }
 
                 for (int n = 0; n < laserList.size(); n++) {
                     Sprite laser = laserList.get(n);
-                    laser.update(1 / 60.0);
-                    if (laser.elapsedTime > 2) {
+                    laser.update(DELTA_TIME);
+                    if (laser.elapsedTime > ELAPSED_TIME) {
                         laserList.remove(n);
                     }
                 }
@@ -130,7 +136,7 @@ public class Asteroids extends Application {
                         if (laser.overlaps(asteroid)) {
                             laserList.remove(laserNum);
                             asteroidList.remove(asteroidsNum);
-                            score ++;
+                            score++;
                         }
                     }
                 }
@@ -145,6 +151,15 @@ public class Asteroids extends Application {
                     asteroid.render(context);
                 }
                 context.setFill(Color.WHITE);
+                context.setStroke(Color.GREEN);
+                context.setFont(new Font("Hack", 18));
+                context.setLineWidth(3);
+                String text = "Score: " + score;
+                int textX = 700;
+                int textY = 15;
+                context.fillText(text, textX, textY);
+                context.strokeText(text, textX, textY);
+
             }
         };
 

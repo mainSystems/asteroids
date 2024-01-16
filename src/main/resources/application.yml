@@ -1,0 +1,4 @@
+asteroids:
+  screen:
+    x: 800
+    y: 600
