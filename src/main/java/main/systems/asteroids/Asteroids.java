@@ -2,6 +2,7 @@ package main.systems.asteroids;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,20 +15,20 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Asteroids extends Application {
-    public static final double DELTA_TIME = 1 / 60.0;
-    public static final int ELAPSED_TIME = 2;
+    private static final double DELTA_TIME = 1 / 60.0;
+    private static final int ELAPSED_TIME = 2;
     private static final int SCREEN_X = 800;
     private static final int SCREEN_Y = 600;
     private static final String TITLE = "Asteroids";
     private static final int asteroidsCount = 6;
-    public static final String BACKGROUND_1 = "img/bg1.jpg";
-    public static final String SHIP_1 = "img/ship1.png";
-    public static final String ASTEROID_1 = "img/ast1.png";
-    public static final String LASER = "img/laser.png";
-    public static final int SPACE_SHIP_SPEED = 100;
-    public static final int SPACE_SHIP_ROTATION = 3;
-    public static final int LASER_SPEED = 400;
-    public static final int ASTEROID_SPEED = 10;
+    private static final String BACKGROUND_1 = "img/bg1.jpg";
+    private static final String SHIP_1 = "img/ship1.png";
+    private static final String ASTEROID_1 = "img/ast1.png";
+    private static final String LASER = "img/laser.png";
+    private static final int SPACE_SHIP_SPEED = 100;
+    private static final int SPACE_SHIP_ROTATION = 3;
+    private static final int LASER_SPEED = 400;
+    private static final int ASTEROID_SPEED = 10;
     private int score = 0;
 
     public static void main(String[] args) {
@@ -94,8 +95,8 @@ public class Asteroids extends Application {
             double y = 400 * Math.random() + 100;
             asteroid.position.set(x, y);
             double angle = 360 * Math.random();
-            asteroid.velocity.setLength(ASTEROID_SPEED);
             asteroid.velocity.setAngle(angle);
+            asteroid.velocity.setLength(ASTEROID_SPEED);
             asteroidList.add(asteroid);
         }
 
