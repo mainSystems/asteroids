@@ -12,23 +12,26 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Asteroids extends Application {
-    public static final int SCREEN_X = 800;
-    public static final int SCREEN_Y = 600;
+    public static final int SCREEN_X = 1280;
+    public static final int SCREEN_Y = 1024;
     private static final double DELTA_TIME = 1 / 60.0;
     private static final int ELAPSED_TIME = 2;
     private static final String TITLE = "Asteroids";
     private static final int TEXT_X = 700, TEXT_Y = 15;
-    private static final int asteroidsCount = 6;
-    private static final String BACKGROUND_1 = "img/bg1.jpg";
-    private static final String SHIP_1 = "img/ship1.png";
-    private static final String ASTEROID_1 = "img/ast1.png";
+    private static final int asteroidsCount = 16;
+    private static final List<String> ASTEROID_LIST = Arrays.asList("img/asteroids/ast1.png", "img/asteroids/ast2.png", "img/asteroids/ast3.png");
+    private static final List<String> SHIP_LIST = Arrays.asList("img/ship/ship1.png", "img/ship/ship2.png", "img/ship/ship3.png");
+    private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
     private static final String LASER = "img/laser.png";
     private static final int SPACE_SHIP_SPEED = 100;
     private static final int SPACE_SHIP_ROTATION = 3;
     private static final int LASER_SPEED = 400;
-    private static final int ASTEROID_SPEED = 10;
+    private static final int ASTEROID_SPEED = 30;
     private GraphicsContext context;
     private ArrayList<String> keyPressedList = new ArrayList<>();
     private ArrayList<String> keyJustPressedList = new ArrayList<>();
@@ -85,15 +88,15 @@ public class Asteroids extends Application {
         );
 
 
-        background = new Sprite(BACKGROUND_1);
+        background = new Sprite(BACKGROUND_LIST.get(genRandom(3)));
         background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
 
 
-        spaceShip = new Sprite(SHIP_1);
+        spaceShip = new Sprite(SHIP_LIST.get(genRandom(3)));
         spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
-        for (int i = 0; i < asteroidsCount; i++) {
-            asteroid = new Sprite(ASTEROID_1);
+        for (int i = 0; i < genRandom(asteroidsCount); i++) {
+            asteroid = new Sprite(ASTEROID_LIST.get(genRandom(3)));
             double x = 500 * Math.random() + 300;
             double y = 400 * Math.random() + 100;
             asteroid.position.set(x, y);
@@ -162,7 +165,6 @@ public class Asteroids extends Application {
         for (Sprite asteroid : asteroidList) {
             asteroid.update(DELTA_TIME);
         }
-
         for (int n = 0; n < laserList.size(); n++) {
             laser = laserList.get(n);
             laser.update(DELTA_TIME);
@@ -192,5 +194,9 @@ public class Asteroids extends Application {
             laserList.add(laser);
         }
         keyJustPressedList.clear();
+    }
+
+    private int genRandom(int max) {
+        return new Random().nextInt(max);
     }
 }
