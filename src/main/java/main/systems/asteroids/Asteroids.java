@@ -28,9 +28,9 @@ public class Asteroids extends Application {
     private static final List<String> SHIP_LIST = Arrays.asList("img/ship/ship1.png", "img/ship/ship2.png", "img/ship/ship3.png");
     private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
     private static final String LASER = "img/laser.png";
-    private static final int SPACE_SHIP_SPEED = 100;
+    private static final int SPACE_SHIP_SPEED = 400;
     private static final int SPACE_SHIP_ROTATION = 3;
-    private static final int LASER_SPEED = 400;
+    private static final int LASER_SPEED = 1600;
     private static final int ASTEROID_SPEED = 30;
     private GraphicsContext context;
     private ArrayList<String> keyPressedList = new ArrayList<>();
