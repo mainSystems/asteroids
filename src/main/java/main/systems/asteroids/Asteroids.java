@@ -33,10 +33,10 @@ public class Asteroids extends Application {
     private static final int LASER_SPEED = 1600;
     private static final int ASTEROID_SPEED = 30;
     private GraphicsContext context;
-    private ArrayList<String> keyPressedList = new ArrayList<>();
-    private ArrayList<String> keyJustPressedList = new ArrayList<>();
-    private ArrayList<Sprite> laserList = new ArrayList<>();
-    private ArrayList<Sprite> asteroidList = new ArrayList<>();
+    private static final ArrayList<String> keyPressedList = new ArrayList<>();
+//    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
+    private static final ArrayList<Sprite> laserList = new ArrayList<>();
+    private static final ArrayList<Sprite> asteroidList = new ArrayList<>();
     private Sprite background;
     private Sprite spaceShip;
     private Sprite asteroid;
@@ -72,7 +72,7 @@ public class Asteroids extends Application {
 
                     if (!keyPressedList.contains(keyName)) {
                         keyPressedList.add(keyName);
-                        keyJustPressedList.add(keyName);
+//                        keyJustPressedList.add(keyName);
                     }
                 }
         );
@@ -183,17 +183,25 @@ public class Asteroids extends Application {
                     spaceShip.velocity.setAngle(spaceShip.rotation);
                     spaceShip.velocity.setLength(SPACE_SHIP_SPEED);
                 }
+                case "DOWN" -> spaceShip.velocity.setLength(-5.00);
+                case "SPACE" -> {
+                    laser = new Sprite(LASER);
+                    laser.position.set(spaceShip.position.x, spaceShip.position.y);
+                    laser.velocity.setAngle(spaceShip.rotation);
+                    laser.velocity.setLength(LASER_SPEED);
+                    laserList.add(laser);
+                }
                 default -> spaceShip.velocity.setLength(0);
             }
         }
-        if (keyJustPressedList.contains("SPACE")) {
-            laser = new Sprite(LASER);
-            laser.position.set(spaceShip.position.x, spaceShip.position.y);
-            laser.velocity.setAngle(spaceShip.rotation);
-            laser.velocity.setLength(LASER_SPEED);
-            laserList.add(laser);
-        }
-        keyJustPressedList.clear();
+//        if (keyJustPressedList.contains("SPACE")) {
+//            laser = new Sprite(LASER);
+//            laser.position.set(spaceShip.position.x, spaceShip.position.y);
+//            laser.velocity.setAngle(spaceShip.rotation);
+//            laser.velocity.setLength(LASER_SPEED);
+//            laserList.add(laser);
+//        }
+//        keyJustPressedList.clear();
     }
 
     private int genRandom(int max) {

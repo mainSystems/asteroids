@@ -8,10 +8,6 @@ public class Vector {
         set(0, 0);
     }
 
-    public Vector(double x, double y) {
-        set(x, y);
-    }
-
     public void add(double dx, double dy) {
         x += dx;
         y += dy;
@@ -21,6 +17,10 @@ public class Vector {
         x *= m;
         y *= m;
     }
+    public void divide(double d) {
+        x /= d;
+        y /= d;
+    }
 
     public double getLength() {
         return Math.sqrt(x * x + y * y);
@@ -29,11 +29,15 @@ public class Vector {
     public void setLength(double length) {
         double currentLength = getLength();
 
-        if (currentLength == 0) {
-            set(length, 0);
+        if (length >= 0) {
+//            if (currentLength == 0) {
+//                set(length, 0);
+//            } else {
+//                multiply(1 / currentLength);
+                multiply(length);
+//            }
         } else {
-            multiply(1 / currentLength);
-            multiply(length);
+            divide(Math.abs(length));
         }
     }
 
