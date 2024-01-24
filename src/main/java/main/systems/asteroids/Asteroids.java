@@ -94,7 +94,7 @@ public class Asteroids extends Application {
             @Override
             public void handle(long nanotime) {
                 handleKey();
-                movings();
+                moving();
                 collisions();
                 render();
             }
@@ -151,17 +151,8 @@ public class Asteroids extends Application {
                 if (laser.overlaps(asteroid)) {
                     laserList.remove(laserNum);
                     if (asteroid.getCollisionCount() > 0) {
-                        for (int i = 1; i < genRandom(3) + asteroidsCountMin; i++) {
-                            double x = Math.random() + 30;
-                            double y = Math.random() + 10;
-                            double angle = 360 * Math.random();
-                            double speed = 60 * Math.random() + 150;
-                            Sprite asteroidFragment = new Sprite(asteroid.getImageFile(),asteroid.getBoundary().getWidth()/2,asteroid.getBoundary().getHeight()/2);
-                            asteroidFragment.position.set(asteroid.position.getX() + x, asteroid.position.getY() + y);
-                            asteroidFragment.velocity.setAngle(angle);
-                            asteroidFragment.velocity.setLength(speed);
-                            asteroidFragment.setCollisionCount(asteroid.getCollisionCount() - 1);
-                            asteroidList.add(asteroidFragment);
+                        for (int i = 0; i < genRandom(3) + asteroidsCountMin; i++) {
+                            generateAsteroidFragment();
                         }
                     }
                     asteroidList.remove(asteroidsNum);
@@ -179,7 +170,22 @@ public class Asteroids extends Application {
         }
     }
 
-    private void movings() {
+    private void generateAsteroidFragment() {
+        double newPositionX = asteroid.position.getX() + Math.random() + 30;
+        double newPositionY = asteroid.position.getY() + Math.random() + 10;
+        double angle = 360 * Math.random();
+        double speed = 60 * Math.random() + 150;
+        double newWidth = asteroid.getBoundary().getWidth() / 2;
+        double newHeight = asteroid.getBoundary().getHeight() / 2;
+        Sprite asteroidFragment = new Sprite(asteroid.getImageFile(), newWidth, newHeight);
+        asteroidFragment.position.set(newPositionX, newPositionY);
+        asteroidFragment.velocity.setAngle(angle);
+        asteroidFragment.velocity.setLength(speed);
+        asteroidFragment.setCollisionCount(asteroid.getCollisionCount() - 1);
+        asteroidList.add(asteroidFragment);
+    }
+
+    private void moving() {
         spaceShip.update(DELTA_TIME);
 
         for (Sprite asteroid : asteroidList) {
