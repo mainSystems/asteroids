@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,6 @@ public class Asteroids extends Application {
     private Sprite spaceShip;
     private Sprite asteroid;
     private Sprite laser;
-    private int lives = 3;
     private int score = 0;
 
     public static void main(String[] args) {
@@ -133,7 +133,7 @@ public class Asteroids extends Application {
         context.setStroke(Color.GREEN);
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
-        String text = String.format("Score: %s\nLives: %s", score, lives);
+        String text = String.format("Score: %s\nLives: %s", score, spaceShip.collisionCount);
         context.fillText(text, TEXT_X, TEXT_Y);
         context.strokeText(text, TEXT_X, TEXT_Y);
     }
@@ -154,7 +154,8 @@ public class Asteroids extends Application {
         for (Sprite asteroid : asteroidList) {
             if (asteroid.overlaps(spaceShip)) {
                 System.out.println("ship broken");
-                lives--;
+                System.out.println("spaceShip.collisionCount = " + spaceShip.collisionCount);
+                spaceShip.collisionCount--;
             }
         }
     }

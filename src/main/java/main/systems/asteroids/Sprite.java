@@ -10,6 +10,7 @@ public class Sprite {
     public Rectangle boundary;
     public Image image;
     public double elapsedTime;
+    public int collisionCount;
 
     public Sprite() {
         position = new Vector();
@@ -17,6 +18,7 @@ public class Sprite {
         rotation = 0;
         boundary = new Rectangle();
         elapsedTime = 0;
+        collisionCount = 99;
     }
 
     public Sprite(String imageFilename) {
