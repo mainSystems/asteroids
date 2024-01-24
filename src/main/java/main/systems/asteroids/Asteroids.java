@@ -29,6 +29,7 @@ public class Asteroids extends Application {
     private static final int asteroidsCount = 16;
     private static final List<String> ASTEROID_LIST = Arrays.asList("img/asteroids/ast1.png", "img/asteroids/ast2.png", "img/asteroids/ast3.png");
     private static final List<String> SHIP_LIST = Arrays.asList("img/ship/ship1.png", "img/ship/ship2.png", "img/ship/ship3.png");
+    private static final String ENGINE_LIST = "img/ship/engine/fire1.jpg";
     private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
     private static final String LASER = "img/laser.png";
     private static final int SPACE_SHIP_SPEED = 400;
@@ -44,6 +45,7 @@ public class Asteroids extends Application {
     private Sprite spaceShip;
     private Sprite asteroid;
     private Sprite laser;
+    private Sprite engine;
     private int score = 0;
 
     public static void main(String[] args) {
@@ -118,6 +120,8 @@ public class Asteroids extends Application {
         spaceShip = new Sprite(SHIP_LIST.get(genRandom(3)));
         spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
+        engine = new Sprite(ENGINE_LIST);
+
         for (int i = 0; i < genRandom(asteroidsCount) + asteroidsCountMin; i++) {
             double x = 500 * Math.random() + 300;
             double y = 400 * Math.random() + 100;
@@ -134,6 +138,7 @@ public class Asteroids extends Application {
     private void render() {
         background.render(context);
         spaceShip.render(context);
+        engine.render(context);
         for (Sprite laser : laserList) {
             laser.render(context);
         }
@@ -214,6 +219,8 @@ public class Asteroids extends Application {
                 case "UP" -> {
                     spaceShip.velocity.setAngle(spaceShip.rotation);
                     spaceShip.velocity.setLength(SPACE_SHIP_SPEED);
+//                    engine.position.set(spaceShip.position.getX() - 40, spaceShip.position.getY());
+//                    engine.velocity.setAngle(spaceShip.rotation);
                 }
                 case "DOWN" -> spaceShip.velocity.setLength(-5.00);
                 case "SPACE" -> {
