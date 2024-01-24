@@ -1,8 +1,8 @@
 package main.systems.asteroids;
 
 public class Vector {
-    public double x;
-    public double y;
+    private double x;
+    private double y;
 
     public Vector() {
         set(0, 0);
@@ -57,4 +57,19 @@ public class Vector {
         y = dy;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
 }

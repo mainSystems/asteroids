@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,23 +87,7 @@ public class Asteroids extends Application {
         );
 
 
-        background = new Sprite(BACKGROUND_LIST.get(genRandom(3)));
-        background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
-
-
-        spaceShip = new Sprite(SHIP_LIST.get(genRandom(3)));
-        spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
-
-        for (int i = 0; i < genRandom(asteroidsCount); i++) {
-            asteroid = new Sprite(ASTEROID_LIST.get(genRandom(3)));
-            double x = 500 * Math.random() + 300;
-            double y = 400 * Math.random() + 100;
-            asteroid.position.set(x, y);
-            double angle = 360 * Math.random();
-            asteroid.velocity.setAngle(angle);
-            asteroid.velocity.setLength(ASTEROID_SPEED);
-            asteroidList.add(asteroid);
-        }
+        generateObject();
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -120,6 +103,27 @@ public class Asteroids extends Application {
         mainStage.show();
     }
 
+    private void generateObject() {
+        background = new Sprite(BACKGROUND_LIST.get(genRandom(3)));
+        background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
+
+
+        spaceShip = new Sprite(SHIP_LIST.get(genRandom(3)));
+        spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
+
+        for (int i = 0; i < genRandom(asteroidsCount); i++) {
+            double x = 500 * Math.random() + 300;
+            double y = 400 * Math.random() + 100;
+            double angle = 360 * Math.random();
+            asteroid = new Sprite(ASTEROID_LIST.get(genRandom(3)));
+            asteroid.position.set(x, y);
+            asteroid.velocity.setAngle(angle);
+            asteroid.velocity.setLength(ASTEROID_SPEED);
+            asteroid.setCollisionCount(genRandom(3));
+            asteroidList.add(asteroid);
+        }
+    }
+
     private void render() {
         background.render(context);
         spaceShip.render(context);
@@ -133,7 +137,7 @@ public class Asteroids extends Application {
         context.setStroke(Color.GREEN);
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
-        String text = String.format("Score: %s\nLives: %s", score, spaceShip.collisionCount);
+        String text = String.format("Score: %s\nLives: %s", score, spaceShip.getCollisionCount());
         context.fillText(text, TEXT_X, TEXT_Y);
         context.strokeText(text, TEXT_X, TEXT_Y);
     }
@@ -154,8 +158,8 @@ public class Asteroids extends Application {
         for (Sprite asteroid : asteroidList) {
             if (asteroid.overlaps(spaceShip)) {
                 System.out.println("ship broken");
-                System.out.println("spaceShip.collisionCount = " + spaceShip.collisionCount);
-                spaceShip.collisionCount--;
+                System.out.println("spaceShip.collisionCount = " + spaceShip.getCollisionCount());
+                spaceShip.setCollisionCount(-1);
             }
         }
     }
@@ -169,7 +173,7 @@ public class Asteroids extends Application {
         for (int n = 0; n < laserList.size(); n++) {
             laser = laserList.get(n);
             laser.update(DELTA_TIME);
-            if (laser.elapsedTime > ELAPSED_TIME) {
+            if (laser.getElapsedTime() > ELAPSED_TIME) {
                 laserList.remove(n);
             }
         }
@@ -187,7 +191,7 @@ public class Asteroids extends Application {
                 case "DOWN" -> spaceShip.velocity.setLength(-5.00);
                 case "SPACE" -> {
                     laser = new Sprite(LASER);
-                    laser.position.set(spaceShip.position.x, spaceShip.position.y);
+                    laser.position.set(spaceShip.position.getX(), spaceShip.position.getY());
                     laser.velocity.setAngle(spaceShip.rotation);
                     laser.velocity.setLength(LASER_SPEED);
                     laserList.add(laser);

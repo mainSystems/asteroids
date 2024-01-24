@@ -1,10 +1,10 @@
 package main.systems.asteroids;
 
 public class Rectangle {
-    double x;
-    double y;
-    double width;
-    double height;
+    private double x;
+    private double y;
+    private double width;
+    private double height;
 
     public Rectangle() {
         setPosition(0, 0);

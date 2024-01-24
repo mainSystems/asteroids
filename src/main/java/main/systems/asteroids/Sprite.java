@@ -7,10 +7,10 @@ public class Sprite {
     public Vector position;
     public Vector velocity;
     public double rotation;
-    public Rectangle boundary;
-    public Image image;
-    public double elapsedTime;
-    public int collisionCount;
+    private final Rectangle boundary;
+    private Image image;
+    private double elapsedTime;
+    private int collisionCount;
 
     public Sprite() {
         position = new Vector();
@@ -18,7 +18,7 @@ public class Sprite {
         rotation = 0;
         boundary = new Rectangle();
         elapsedTime = 0;
-        collisionCount = 99;
+        collisionCount = 0;
     }
 
     public Sprite(String imageFilename) {
@@ -32,7 +32,7 @@ public class Sprite {
     }
 
     public Rectangle getBoundary() {
-        boundary.setPosition(position.x, position.y);
+        boundary.setPosition(position.getX(), position.getY());
         return boundary;
     }
 
@@ -44,32 +44,48 @@ public class Sprite {
         double halfWidth = image.getWidth() / 2;
         double halfHeight = image.getHeight() / 2;
 
-        if (position.x + halfWidth < 0) {
-            position.x = screenWidth + halfWidth;
+        if (position.getX() + halfWidth < 0) {
+            position.setX(screenWidth + halfWidth);
         }
-        if (position.x > screenWidth + halfWidth) {
-            position.x = -halfWidth;
+        if (position.getX() > screenWidth + halfWidth) {
+            position.setX(-halfWidth);
         }
-        if (position.y + halfHeight < 0) {
-            position.y = screenHeight + halfHeight;
+        if (position.getY() + halfHeight < 0) {
+            position.setY(screenHeight + halfHeight);
         }
-        if (position.y > screenHeight + halfHeight) {
-            position.y = -halfHeight;
+        if (position.getY() > screenHeight + halfHeight) {
+            position.setY(-halfHeight);
         }
     }
 
     public void update(double deltaTime) {
         elapsedTime += deltaTime;
-        position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+        position.add(velocity.getX() * deltaTime, velocity.getY() * deltaTime);
         wrap(Asteroids.SCREEN_X, Asteroids.SCREEN_Y);
     }
 
     public void render(GraphicsContext context) {
         context.save();
-        context.translate(position.x, position.y);
+        context.translate(position.getX(), position.getY());
         context.rotate(rotation);
         context.translate(-image.getWidth() / 2, -image.getHeight() / 2);
         context.drawImage(image, 0, 0);
         context.restore();
+    }
+
+    public int getCollisionCount() {
+        return collisionCount;
+    }
+
+    public void setCollisionCount(int collisionCount) {
+        if (collisionCount < 0) {
+            this.collisionCount--;
+        } else {
+            this.collisionCount += collisionCount;
+        }
+    }
+
+    public double getElapsedTime() {
+        return elapsedTime;
     }
 }
