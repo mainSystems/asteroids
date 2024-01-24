@@ -155,10 +155,11 @@ public class Asteroids extends Application {
                             double x = Math.random() + 30;
                             double y = Math.random() + 10;
                             double angle = 360 * Math.random();
+                            double speed = 60 * Math.random() + 150;
                             Sprite asteroidFragment = new Sprite(ASTEROID_LIST.get(genRandom(3)));
                             asteroidFragment.position.set(asteroid.position.getX() + x, asteroid.position.getY() + y);
                             asteroidFragment.velocity.setAngle(angle);
-                            asteroidFragment.velocity.setLength(ASTEROID_SPEED + 60);
+                            asteroidFragment.velocity.setLength(speed);
                             asteroidFragment.setCollisionCount(asteroid.getCollisionCount() - 1);
                             asteroidList.add(asteroidFragment);
                         }
