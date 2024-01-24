@@ -34,4 +34,12 @@ public class Rectangle {
                         other.y + other.height < y;
         return !noOverlaps;
     }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
 }

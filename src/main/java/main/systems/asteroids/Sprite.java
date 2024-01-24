@@ -26,8 +26,18 @@ public class Sprite {
         setImage(imageFilename);
     }
 
+    public Sprite(String imageFileName, double width, double height) {
+        this();
+        resizeImage(imageFileName, width, height);
+    }
+
     public void setImage(String imageFileName) {
         image = new Image(imageFileName);
+        boundary.setSize(image.getWidth(), image.getHeight());
+    }
+
+    public void resizeImage(String imageFileName, double width, double height) {
+        image = new Image(imageFileName, width, height, false, false);
         boundary.setSize(image.getWidth(), image.getHeight());
     }
 
