@@ -10,7 +10,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +24,7 @@ public class Asteroids extends Application {
     public static final double SCREEN_X = 1280, SCREEN_Y = 1024;
     public static final int asteroidsCountMin = 3;
     private static final double DELTA_TIME = 1 / 60.0;
-    private static final int ELAPSED_TIME = 2;
+    private static final double ELAPSED_TIME = 0.8;
     private static final String TITLE = "Asteroids";
     private static final int asteroidsCount = 16;
     private static final List<String> ASTEROID_LIST = Arrays.asList("img/asteroids/ast1.png", "img/asteroids/ast2.png", "img/asteroids/ast3.png");
@@ -43,13 +47,23 @@ public class Asteroids extends Application {
     private int score = 0;
 
     public static void main(String[] args) {
+        Thread Mplayer = new Thread(() -> Mplayer("C:\\java\\asteroids\\src\\main\\resources\\music\\DRIVE.mp3"));
+        Mplayer.start();
+
+        launch(args);
+
+    }
+
+    private static void Mplayer(String soundFile) {
+        FileInputStream fis = null;
         try {
-            launch(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.exit(0);
+            fis = new FileInputStream(soundFile);
+            Player playMP3 = new Player(fis);
+            playMP3.play();
+        } catch (FileNotFoundException | JavaLayerException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -84,7 +98,6 @@ public class Asteroids extends Application {
                     }
                 }
         );
-
 
         generateObject();
 
