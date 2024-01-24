@@ -12,6 +12,8 @@ public class Sprite {
     private double elapsedTime;
     private int collisionCount;
 
+    private String imageFile;
+
     public Sprite() {
         position = new Vector();
         velocity = new Vector();
@@ -32,11 +34,13 @@ public class Sprite {
     }
 
     public void setImage(String imageFileName) {
+        imageFile = imageFileName;
         image = new Image(imageFileName);
         boundary.setSize(image.getWidth(), image.getHeight());
     }
 
     public void resizeImage(String imageFileName, double width, double height) {
+        imageFile = imageFileName;
         image = new Image(imageFileName, width, height, false, false);
         boundary.setSize(image.getWidth(), image.getHeight());
     }
@@ -97,5 +101,13 @@ public class Sprite {
 
     public double getElapsedTime() {
         return elapsedTime;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public String getImageFile() {
+        return imageFile;
     }
 }
