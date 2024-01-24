@@ -90,10 +90,7 @@ public class Asteroids extends Application {
         mainScene.setOnKeyReleased(
                 (KeyEvent event) -> {
                     String keyName = event.getCode().toString();
-
-                    if (keyPressedList.contains(keyName)) {
-                        keyPressedList.remove(keyName);
-                    }
+                    keyPressedList.remove(keyName);
                 }
         );
 
