@@ -55,10 +55,8 @@ public class Asteroids extends Application {
     }
 
     private static void Mplayer(String soundFile) {
-        FileInputStream fis = null;
         try {
-            fis = new FileInputStream(soundFile);
-            Player playMP3 = new Player(fis);
+            Player playMP3 = new Player(new FileInputStream(soundFile));
             playMP3.play();
         } catch (FileNotFoundException | JavaLayerException e) {
             throw new RuntimeException(e);
