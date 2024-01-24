@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Asteroids extends Application {
-    public static final double SCREEN_X = 1280;
-    public static final double SCREEN_Y = 1024;
+    public static final double SCREEN_X = 1280, SCREEN_Y = 1024;
+    public static final int asteroidsCountMin = 3;
     private static final double DELTA_TIME = 1 / 60.0;
     private static final int ELAPSED_TIME = 2;
     private static final String TITLE = "Asteroids";
-    private static final int TEXT_X = 700, TEXT_Y = 15;
     private static final int asteroidsCount = 16;
     private static final List<String> ASTEROID_LIST = Arrays.asList("img/asteroids/ast1.png", "img/asteroids/ast2.png", "img/asteroids/ast3.png");
     private static final List<String> SHIP_LIST = Arrays.asList("img/ship/ship1.png", "img/ship/ship2.png", "img/ship/ship3.png");
@@ -36,7 +35,6 @@ public class Asteroids extends Application {
     //    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
     private static final ArrayList<Sprite> laserList = new ArrayList<>();
     private static final ArrayList<Sprite> asteroidList = new ArrayList<>();
-    public static final int asteroidsCountMin = 3;
     private GraphicsContext context;
     private Sprite background;
     private Sprite spaceShip;
@@ -139,8 +137,8 @@ public class Asteroids extends Application {
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
         String text = String.format("Score: %s\nLives: %s", score, spaceShip.getCollisionCount());
-        context.fillText(text, TEXT_X, TEXT_Y);
-        context.strokeText(text, TEXT_X, TEXT_Y);
+        context.fillText(text, SCREEN_X - 100, SCREEN_Y - 100);
+        context.strokeText(text, SCREEN_X - 100, SCREEN_Y - 100);
     }
 
     private void collisions() {

@@ -33,12 +33,6 @@ public class Sprite {
         resizeImage(imageFileName, width, height);
     }
 
-    public void setImage(String imageFileName) {
-        imageFile = imageFileName;
-        image = new Image(imageFileName);
-        boundary.setSize(image.getWidth(), image.getHeight());
-    }
-
     public void resizeImage(String imageFileName, double width, double height) {
         imageFile = imageFileName;
         image = new Image(imageFileName, width, height, false, false);
@@ -105,6 +99,12 @@ public class Sprite {
 
     public Image getImage() {
         return image;
+    }
+
+    public void setImage(String imageFileName) {
+        imageFile = imageFileName;
+        image = new Image(imageFileName);
+        boundary.setSize(image.getWidth(), image.getHeight());
     }
 
     public String getImageFile() {
