@@ -11,7 +11,6 @@ public class Sprite {
     private Image image;
     private double elapsedTime;
     private int collisionCount;
-
     private String imageFile;
 
     public Sprite() {
