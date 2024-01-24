@@ -7,7 +7,7 @@ public class Sprite {
     public Vector position;
     public Vector velocity;
     public double rotation;
-    private final Rectangle boundary;
+    private Rectangle boundary;
     private Image image;
     private double elapsedTime;
     private int collisionCount;

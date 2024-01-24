@@ -17,6 +17,7 @@ public class Vector {
         x *= m;
         y *= m;
     }
+
     public void divide(double d) {
         x /= d;
         y /= d;
@@ -34,7 +35,7 @@ public class Vector {
 //                set(length, 0);
 //            } else {
 //                multiply(1 / currentLength);
-                multiply(length);
+            multiply(length);
 //            }
         } else {
             divide(Math.abs(length));
@@ -61,12 +62,12 @@ public class Vector {
         return x;
     }
 
-    public double getY() {
-        return y;
-    }
-
     public void setX(double x) {
         this.x = x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public void setY(double y) {

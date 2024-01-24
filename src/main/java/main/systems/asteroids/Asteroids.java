@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Asteroids extends Application {
-    public static final int SCREEN_X = 1280;
-    public static final int SCREEN_Y = 1024;
+    public static final double SCREEN_X = 1280;
+    public static final double SCREEN_Y = 1024;
     private static final double DELTA_TIME = 1 / 60.0;
     private static final int ELAPSED_TIME = 2;
     private static final String TITLE = "Asteroids";
@@ -32,11 +32,12 @@ public class Asteroids extends Application {
     private static final int SPACE_SHIP_ROTATION = 3;
     private static final int LASER_SPEED = 1600;
     private static final int ASTEROID_SPEED = 30;
-    private GraphicsContext context;
     private static final ArrayList<String> keyPressedList = new ArrayList<>();
-//    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
+    //    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
     private static final ArrayList<Sprite> laserList = new ArrayList<>();
     private static final ArrayList<Sprite> asteroidList = new ArrayList<>();
+    public static final int asteroidsCountMin = 3;
+    private GraphicsContext context;
     private Sprite background;
     private Sprite spaceShip;
     private Sprite asteroid;
@@ -111,7 +112,7 @@ public class Asteroids extends Application {
         spaceShip = new Sprite(SHIP_LIST.get(genRandom(3)));
         spaceShip.position.set(SCREEN_X / 8, SCREEN_Y / 2);
 
-        for (int i = 0; i < genRandom(asteroidsCount); i++) {
+        for (int i = 0; i < genRandom(asteroidsCount) + asteroidsCountMin; i++) {
             double x = 500 * Math.random() + 300;
             double y = 400 * Math.random() + 100;
             double angle = 360 * Math.random();
@@ -149,6 +150,19 @@ public class Asteroids extends Application {
                 asteroid = asteroidList.get(asteroidsNum);
                 if (laser.overlaps(asteroid)) {
                     laserList.remove(laserNum);
+                    if (asteroid.getCollisionCount() > 0) {
+                        for (int i = 1; i < genRandom(3) + asteroidsCountMin; i++) {
+                            double x = Math.random() + 30;
+                            double y = Math.random() + 10;
+                            double angle = 360 * Math.random();
+                            Sprite asteroidFragment = new Sprite(ASTEROID_LIST.get(genRandom(3)));
+                            asteroidFragment.position.set(asteroid.position.getX() + x, asteroid.position.getY() + y);
+                            asteroidFragment.velocity.setAngle(angle);
+                            asteroidFragment.velocity.setLength(ASTEROID_SPEED + 60);
+                            asteroidFragment.setCollisionCount(asteroid.getCollisionCount() - 1);
+                            asteroidList.add(asteroidFragment);
+                        }
+                    }
                     asteroidList.remove(asteroidsNum);
                     score++;
                 }
