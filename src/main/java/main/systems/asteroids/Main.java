@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Asteroids extends Application {
+public class Main extends Application {
     public static final double SCREEN_X = 1280, SCREEN_Y = 1024;
     public static final int asteroidsCountMin = 3;
     private static final double DELTA_TIME = 1 / 60.0;
@@ -49,21 +49,10 @@ public class Asteroids extends Application {
     private int score = 0;
 
     public static void main(String[] args) {
-        Thread Mplayer = new Thread(() -> Mplayer("src/main/resources/music/DRIVE.mp3"));
-        Mplayer.start();
+        //Thread player = new Thread(() -> InnerPlayer.player("src/main/resources/music/DRIVE.mp3"));
+        //player.start();
 
         launch(args);
-
-    }
-
-    private static void Mplayer(String soundFile) {
-        try {
-            Player playMP3 = new Player(new FileInputStream(soundFile));
-            playMP3.play();
-        } catch (FileNotFoundException | JavaLayerException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
@@ -149,7 +138,7 @@ public class Asteroids extends Application {
         context.setStroke(Color.GREEN);
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
-        String text = String.format("Score: %s\nLives: %s", score, spaceShip.getCollisionCount());
+        String text = String.format("Score: %s\nLives: %s\nCPUInfo: %f", score, spaceShip.getCollisionCount(), Info.getUsageCpu());
         context.fillText(text, SCREEN_X - 100, SCREEN_Y - 100);
         context.strokeText(text, SCREEN_X - 100, SCREEN_Y - 100);
     }

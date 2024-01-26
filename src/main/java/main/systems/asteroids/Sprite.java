@@ -68,7 +68,7 @@ public class Sprite {
     public void update(double deltaTime) {
         elapsedTime += deltaTime;
         position.add(velocity.getX() * deltaTime, velocity.getY() * deltaTime);
-        wrap(Asteroids.SCREEN_X, Asteroids.SCREEN_Y);
+        wrap(Main.SCREEN_X, Main.SCREEN_Y);
     }
 
     public void render(GraphicsContext context) {
