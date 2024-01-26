@@ -49,7 +49,7 @@ public class Asteroids extends Application {
     private int score = 0;
 
     public static void main(String[] args) {
-        Thread Mplayer = new Thread(() -> Mplayer("C:\\java\\asteroids\\src\\main\\resources\\music\\DRIVE.mp3"));
+        Thread Mplayer = new Thread(() -> Mplayer("src/main/resources/music/DRIVE.mp3"));
         Mplayer.start();
 
         launch(args);
