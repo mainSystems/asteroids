@@ -28,8 +28,8 @@ public class Asteroid {
     }
 
     public static void generateAsteroidFragment() {
-        double newPositionX = asteroid.position.getX() + Math.random() + 30;
-        double newPositionY = asteroid.position.getY() + Math.random() + 10;
+        double newPositionX = asteroid.position.getX() + Math.random()*30;
+        double newPositionY = asteroid.position.getY() + Math.random()*10;
         double angle = 360 * Math.random();
         double speed = 60 * Math.random() + 150;
         double newWidth = asteroid.getBoundary().getWidth() / 2;
