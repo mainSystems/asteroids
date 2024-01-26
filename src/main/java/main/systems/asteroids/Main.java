@@ -122,7 +122,7 @@ public class Main extends Application {
                 if (laser.overlaps(asteroid)) {
                     Weapon.removeLaser(laserNum);
                     if (asteroid.getCollisionCount() > 0) {
-                        for (int i = 0; i < genRandom(3) + Asteroid.getAsteroidsCountMin(); i++) {
+                        for (int i = 0; i < genRandom(Asteroid.getAsteroidsCountMin()); i++) {
                             Asteroid.generateAsteroidFragment();
                         }
                     }
