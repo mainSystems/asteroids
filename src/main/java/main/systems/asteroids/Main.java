@@ -24,7 +24,7 @@ public class Main extends Application {
     private static final String ENGINE_LIST = "img/ship/engine/fire1.jpg";
     private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
     private static final ArrayList<String> keyPressedList = new ArrayList<>();
-    //    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
+//    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
     private GraphicsContext context;
     private Sprite background;
     private Sprite engine;
@@ -122,8 +122,13 @@ public class Main extends Application {
                 if (laser.overlaps(asteroid)) {
                     Weapon.removeLaser(laserNum);
                     if (asteroid.getCollisionCount() > 0) {
+                        String asteroidImg = asteroid.getImageFile();
+                        double newPositionX = asteroid.position.getX() + Math.random()*3;
+                        double newPositionY = asteroid.position.getY() + Math.random()*1;
+                        double newWidth = asteroid.getBoundary().getWidth() / 2;
+                        double newHeight = asteroid.getBoundary().getHeight() / 2;
                         for (int i = 0; i < genRandom(Asteroid.getAsteroidsCountMin()); i++) {
-                            Asteroid.generateAsteroidFragment();
+                            Asteroid.generateAsteroidFragment(asteroidImg, newPositionX, newPositionY,newWidth,newHeight);
                         }
                     }
                     Asteroid.removeAsteroid(asteroidsNum);
@@ -173,11 +178,7 @@ public class Main extends Application {
             }
         }
 //        if (keyJustPressedList.contains("SPACE")) {
-//            laser = new Sprite(LASER);
-//            laser.position.set(spaceShip.position.x, spaceShip.position.y);
-//            laser.velocity.setAngle(spaceShip.rotation);
-//            laser.velocity.setLength(LASER_SPEED);
-//            laserList.add(laser);
+//            Weapon.getLaserList();
 //        }
 //        keyJustPressedList.clear();
     }

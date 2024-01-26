@@ -27,14 +27,10 @@ public class Asteroid {
         }
     }
 
-    public static void generateAsteroidFragment() {
-        double newPositionX = asteroid.position.getX() + Math.random()*30;
-        double newPositionY = asteroid.position.getY() + Math.random()*10;
+    public static void generateAsteroidFragment(String asteroidImg,double newPositionX, double newPositionY,double newWidth, double newHeight) {
         double angle = 360 * Math.random();
         double speed = 60 * Math.random() + 150;
-        double newWidth = asteroid.getBoundary().getWidth() / 2;
-        double newHeight = asteroid.getBoundary().getHeight() / 2;
-        Sprite asteroidFragment = new Sprite(asteroid.getImageFile(), newWidth, newHeight);
+        Sprite asteroidFragment = new Sprite(asteroidImg, newWidth, newHeight);
         asteroidFragment.position.set(newPositionX, newPositionY);
         asteroidFragment.velocity.setAngle(angle);
         asteroidFragment.velocity.setLength(speed);
