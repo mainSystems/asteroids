@@ -6,7 +6,7 @@ import javazoom.jl.player.Player;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class InnerPlayer {
+public class MPlayer {
     public static void player(String soundFile) {
         try {
             Player playMP3 = new Player(new FileInputStream(soundFile));

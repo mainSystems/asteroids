@@ -23,19 +23,15 @@ public class Main extends Application {
     private static final String TITLE = "Asteroids";
     private static final String ENGINE_LIST = "img/ship/engine/fire1.jpg";
     private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
-    private static final String LASER = "img/laser.png";
-    private static final int LASER_SPEED = 1600;
     private static final ArrayList<String> keyPressedList = new ArrayList<>();
     //    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
-    private static final ArrayList<Sprite> laserList = new ArrayList<>();
     private GraphicsContext context;
     private Sprite background;
-    private Sprite laser;
     private Sprite engine;
     private int score = 0;
 
     public static void main(String[] args) {
-        //Thread player = new Thread(() -> InnerPlayer.player("src/main/resources/music/DRIVE.mp3"));
+        //Thread player = new Thread(() -> MPlayer.player("src/main/resources/music/DRIVE.mp3"));
         //player.start();
 
         launch(args);
@@ -103,7 +99,7 @@ public class Main extends Application {
 
         Ship.getSpaceShip().render(context);
         engine.render(context);
-        for (Sprite laser : laserList) {
+        for (Sprite laser : Weapon.getLaserList()) {
             laser.render(context);
         }
         for (Sprite asteroid : Asteroid.getAsteroidList()) {
@@ -119,12 +115,12 @@ public class Main extends Application {
     }
 
     private void collisions() {
-        for (int laserNum = 0; laserNum < laserList.size(); laserNum++) {
-            laser = laserList.get(laserNum);
+        for (int laserNum = 0; laserNum < Weapon.getLaserList().size(); laserNum++) {
+            Sprite laser = Weapon.getLaserList().get(laserNum);
             for (int asteroidsNum = 0; asteroidsNum < Asteroid.getAsteroidList().size(); asteroidsNum++) {
                 Sprite asteroid = Asteroid.getAsteroidList().get(asteroidsNum);
                 if (laser.overlaps(asteroid)) {
-                    laserList.remove(laserNum);
+                    Weapon.removeLaser(laserNum);
                     if (asteroid.getCollisionCount() > 0) {
                         for (int i = 0; i < genRandom(3) + Asteroid.getAsteroidsCountMin(); i++) {
                             Asteroid.generateAsteroidFragment();
@@ -151,11 +147,11 @@ public class Main extends Application {
         for (Sprite asteroid : Asteroid.getAsteroidList()) {
             asteroid.update(DELTA_TIME);
         }
-        for (int n = 0; n < laserList.size(); n++) {
-            laser = laserList.get(n);
+        for (int laserNum = 0; laserNum < Weapon.getLaserList().size(); laserNum++) {
+            Sprite laser = Weapon.getLaserList().get(laserNum);
             laser.update(DELTA_TIME);
             if (laser.getElapsedTime() > ELAPSED_TIME) {
-                laserList.remove(n);
+                Weapon.removeLaser(laserNum);
             }
         }
     }
@@ -172,13 +168,7 @@ public class Main extends Application {
 //                    engine.velocity.setAngle(spaceShip.rotation);
                 }
                 case "DOWN" -> Ship.getSpaceShip().velocity.setLength(-5.00);
-                case "SPACE" -> {
-                    laser = new Sprite(LASER);
-                    laser.position.set(Ship.getSpaceShip().position.getX(), Ship.getSpaceShip().position.getY());
-                    laser.velocity.setAngle(Ship.getSpaceShip().rotation);
-                    laser.velocity.setLength(LASER_SPEED);
-                    laserList.add(laser);
-                }
+                case "SPACE" -> Weapon.genLaser();
                 default -> Ship.getSpaceShip().velocity.setLength(0);
             }
         }
