@@ -4,10 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Sprite {
+    private final Rectangle boundary;
+    //CommonData commonData;
     public Vector position;
     public Vector velocity;
     public double rotation;
-    private final Rectangle boundary;
     private Image image;
     private double elapsedTime;
     private int collisionCount;
@@ -68,7 +69,7 @@ public class Sprite {
     public void update(double deltaTime) {
         elapsedTime += deltaTime;
         position.add(velocity.getX() * deltaTime, velocity.getY() * deltaTime);
-        wrap(Main.SCREEN_X, Main.SCREEN_Y);
+        wrap(CommonData.getSCREEN_X(), CommonData.getSCREEN_Y());
     }
 
     public void render(GraphicsContext context) {

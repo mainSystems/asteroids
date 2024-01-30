@@ -12,19 +12,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class Main extends Application {
-    public static final double SCREEN_X = 1280, SCREEN_Y = 1024;
-    private static final double DELTA_TIME = 1 / 60.0;
-    private static final double ELAPSED_TIME = 0.8;
-    private static final String TITLE = "Asteroids";
-    private static final String ENGINE_LIST = "img/ship/engine/fire1.jpg";
-    private static final List<String> BACKGROUND_LIST = Arrays.asList("img/background/bg1.jpg", "img/background/bg2.jpg", "img/background/bg3.jpg");
     private static final ArrayList<String> keyPressedList = new ArrayList<>();
-//    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
+    //    private static final ArrayList<String> keyJustPressedList = new ArrayList<>();
     private GraphicsContext context;
     private Sprite background;
     private Sprite engine;
@@ -39,13 +30,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage mainStage) {
-        mainStage.setTitle(TITLE);
+        mainStage.setTitle(CommonData.getTITLE());
 
         BorderPane root = new BorderPane();
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
 
-        Canvas canvas = new Canvas(SCREEN_X, SCREEN_Y);
+        Canvas canvas = new Canvas(CommonData.getSCREEN_X(), CommonData.getSCREEN_Y());
         context = canvas.getGraphicsContext2D();
         root.setCenter(canvas);
 
@@ -84,12 +75,12 @@ public class Main extends Application {
     }
 
     private void generateObject() {
-        background = new Sprite(BACKGROUND_LIST.get(genRandom(3)));
-        background.position.set(SCREEN_X / 2, SCREEN_Y / 2);
+        background = new Sprite(CommonData.getBACKGROUND_LIST().get(CommonData.genRandom(3)));
+        background.position.set(CommonData.getSCREEN_X() / 2, CommonData.getSCREEN_Y() / 2);
 
         Ship.genShip();
 
-        engine = new Sprite(ENGINE_LIST);
+        engine = new Sprite(CommonData.getENGINE_LIST());
 
         Asteroid.genAsteroid();
     }
@@ -110,8 +101,8 @@ public class Main extends Application {
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
         String text = String.format("Score: %s\nLives: %s\nCPUInfo: %f", score, Ship.getSpaceShip().getCollisionCount(), Info.getUsageCpu());
-        context.fillText(text, SCREEN_X - 100, SCREEN_Y - 100);
-        context.strokeText(text, SCREEN_X - 100, SCREEN_Y - 100);
+        context.fillText(text, CommonData.getSCREEN_X(), -100, CommonData.getSCREEN_Y() - 100);
+        context.strokeText(text, CommonData.getSCREEN_X() - 100, CommonData.getSCREEN_Y() - 100);
     }
 
     private void collisions() {
@@ -123,12 +114,12 @@ public class Main extends Application {
                     Weapon.removeLaser(laserNum);
                     if (asteroid.getCollisionCount() > 0) {
                         String asteroidImg = asteroid.getImageFile();
-                        double newPositionX = asteroid.position.getX() + Math.random()*3;
-                        double newPositionY = asteroid.position.getY() + Math.random()*1;
+                        double newPositionX = asteroid.position.getX() + Math.random() * 3;
+                        double newPositionY = asteroid.position.getY() + Math.random() * 1;
                         double newWidth = asteroid.getBoundary().getWidth() / 2;
                         double newHeight = asteroid.getBoundary().getHeight() / 2;
-                        for (int i = 0; i < genRandom(Asteroid.getAsteroidsCountMin()); i++) {
-                            Asteroid.generateAsteroidFragment(asteroidImg, newPositionX, newPositionY,newWidth,newHeight);
+                        for (int i = 0; i < CommonData.genRandom(CommonData.getAsteroidsCountMin()); i++) {
+                            Asteroid.generateAsteroidFragment(asteroidImg, newPositionX, newPositionY, newWidth, newHeight);
                         }
                     }
                     Asteroid.removeAsteroid(asteroidsNum);
@@ -147,15 +138,15 @@ public class Main extends Application {
     }
 
     private void moving() {
-        Ship.getSpaceShip().update(DELTA_TIME);
+        Ship.getSpaceShip().update(CommonData.getDELTA_TIME());
 
         for (Sprite asteroid : Asteroid.getAsteroidList()) {
-            asteroid.update(DELTA_TIME);
+            asteroid.update(CommonData.getDELTA_TIME());
         }
         for (int laserNum = 0; laserNum < Weapon.getLaserList().size(); laserNum++) {
             Sprite laser = Weapon.getLaserList().get(laserNum);
-            laser.update(DELTA_TIME);
-            if (laser.getElapsedTime() > ELAPSED_TIME) {
+            laser.update(CommonData.getDELTA_TIME());
+            if (laser.getElapsedTime() > CommonData.getELAPSED_TIME()) {
                 Weapon.removeLaser(laserNum);
             }
         }
@@ -181,9 +172,5 @@ public class Main extends Application {
 //            Weapon.getLaserList();
 //        }
 //        keyJustPressedList.clear();
-    }
-
-    private int genRandom(int max) {
-        return new Random().nextInt(max);
     }
 }
