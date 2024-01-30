@@ -17,7 +17,6 @@ public class CommonData {
     private static final int asteroidsCountMin = 3;
     private static final String LASER = "img/laser.png";
     private static final int LASER_SPEED = 1600;
-
     public static double getSCREEN_X() {
         return SCREEN_X;
     }
