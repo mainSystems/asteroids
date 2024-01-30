@@ -17,6 +17,9 @@ public class CommonData {
     private static final int asteroidsCountMin = 3;
     private static final String LASER = "img/laser.png";
     private static final int LASER_SPEED = 1600;
+    private static final List<String> SHIP_LIST = Arrays.asList("img/ship/ship1.png", "img/ship/ship2.png", "img/ship/ship3.png");
+    private static final int SPACE_SHIP_SPEED = 400;
+    private static final int SPACE_SHIP_ROTATION = 3;
     public static double getSCREEN_X() {
         return SCREEN_X;
     }
@@ -67,6 +70,18 @@ public class CommonData {
 
     public static int getLASER_SPEED() {
         return LASER_SPEED;
+    }
+
+    public static int getSpaceShipSpeed() {
+        return SPACE_SHIP_SPEED;
+    }
+
+    public static int getSpaceShipRotation() {
+        return SPACE_SHIP_ROTATION;
+    }
+
+    public static List<String> getSHIP_LIST() {
+        return SHIP_LIST;
     }
 
     public static int genRandom(int max) {
