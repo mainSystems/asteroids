@@ -101,8 +101,8 @@ public class Main extends Application {
         context.setFont(new Font("Hack", 18));
         context.setLineWidth(0);
         String text = String.format("Score: %s\nLives: %s\nCPUInfo: %f", score, Ship.getSpaceShip().getCollisionCount(), Info.getUsageCpu());
-        context.fillText(text, CommonData.getSCREEN_X(), -100, CommonData.getSCREEN_Y() - 100);
-        context.strokeText(text, CommonData.getSCREEN_X() - 100, CommonData.getSCREEN_Y() - 100);
+        context.fillText(text, CommonData.getSCREEN_X(), -135, CommonData.getSCREEN_Y() - 80);
+        context.strokeText(text, CommonData.getSCREEN_X() - 135, CommonData.getSCREEN_Y() - 80);
     }
 
     private void collisions() {
